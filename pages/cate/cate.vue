@@ -1,24 +1,27 @@
 <template>
-	<view class="scroll-view-container">
-		<scroll-view scroll-y="true" :style="{height: wh+'px'}" class="left-scroll-view">
-			<block v-for="(item,i) in cartList" :key="i">
-				<view :class="['left-scroll-view-item',i === active ? 'active' :'']" @click="activeChanged(i)">
-					{{item.cat_name}}
-				</view>
-			</block>
-		</scroll-view>
-		<scroll-view scroll-y="true" :style="{height: wh+'px'}" class="right-scroll-view" :scroll-top="scrollTop">
-			<view class="cate-lv2" v-for="(item2,i2) in cartLevel2" :key="i2">
-				<view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
-				<view class="cate-lv3-list">
-					<view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3"
-						@click="gotoGoodsList(item3)">
-						<image :src="item3.cat_icon"></image>
-						<text>{{item3.cat_name}}</text>
+	<view>
+		<my-search @click="gotoSearch"></my-search>
+		<view class="scroll-view-container">
+			<scroll-view scroll-y="true" :style="{height: wh+'px'}" class="left-scroll-view">
+				<block v-for="(item,i) in cartList" :key="i">
+					<view :class="['left-scroll-view-item',i === active ? 'active' :'']" @click="activeChanged(i)">
+						{{item.cat_name}}
+					</view>
+				</block>
+			</scroll-view>
+			<scroll-view scroll-y="true" :style="{height: wh+'px'}" class="right-scroll-view" :scroll-top="scrollTop">
+				<view class="cate-lv2" v-for="(item2,i2) in cartLevel2" :key="i2">
+					<view class="cate-lv2-title">/ {{item2.cat_name}} /</view>
+					<view class="cate-lv3-list">
+						<view class="cate-lv3-item" v-for="(item3,i3) in item2.children" :key="i3"
+							@click="gotoGoodsList(item3)">
+							<image :src="item3.cat_icon"></image>
+							<text>{{item3.cat_name}}</text>
+						</view>
 					</view>
 				</view>
-			</view>
-		</scroll-view>
+			</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -40,7 +43,7 @@
 		onLoad() {
 			this.getCateList()
 			const sysInfo = uni.getSystemInfoSync()
-			this.wh = sysInfo.windowHeight
+			this.wh = sysInfo.windowHeight - 50
 		},
 		methods: {
 			async getCateList() {
@@ -63,6 +66,11 @@
 			gotoGoodsList(item) {
 				uni.navigateTo({
 					url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
+				})
+			},
+			gotoSearch(){
+				uni.navigateTo({
+					url:'/subpkg/search/search'
 				})
 			}
 		}
